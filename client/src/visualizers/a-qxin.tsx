@@ -31,7 +31,7 @@ export const aqxinVisualizer = new Visualizer(
       let y = p5.map(p5.noise(xoff, yoff), 0, 1, 100, 400) + height * amp2/10;
       yoff += amp2/10;
       p5.vertex(x, y);
-      xoff += .02;
+      xoff += .02 * p5.mouseY/300 * p5.mouseX/300;
     }
     yoff += .01;
     p5.vertex(p5.width, p5.height);
