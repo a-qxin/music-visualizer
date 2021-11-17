@@ -140,8 +140,10 @@ function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
   ]) as List<OscillatorType>;
 
   return (
+    // instrument image
+
     <div className="pv4">
-      <div className="relative dib h4 w-100 ml4">
+      {/* <div className="relative dib h4 w-100 ml4">
         {Range(2, 7).map(octave =>
           keys.map(key => {
             const isMinor = key.note.indexOf('b') !== -1;
@@ -158,7 +160,12 @@ function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
             );
           }),
         )}
-      </div>
+      </div> */}
+
+      <div>
+        empty div
+      </div> 
+      
       <div className={'pl4 pt4 flex'}>
         {oscillators.map(o => (
           <PianoType
