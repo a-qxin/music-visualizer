@@ -7,22 +7,20 @@ import * as Tone from 'tone';
 // project imports
 import { Visualizer } from '../Visualizers';
 
+// 2nd dimension for visualizer
 let yoff = 0.0;
+
 export const aqxinVisualizer = new Visualizer(
   'aqxin',
   (p5: P5, analyzer: Tone.Analyser) => {
-
-    const width = window.innerWidth;
     const height = window.innerHeight / 2;
 
     // p5.background(51);
 
-    // p5.strokeWeight(dim * 0.01);
-    // p5.stroke(255, 255, 255, 255); // line
-
     const values = analyzer.getValue();
     p5.beginShape();
 
+    // 1st dimension for visualizer
     let xoff = 0.0;
 
     for (let x = 0; x <= p5.width; x += 10) {
