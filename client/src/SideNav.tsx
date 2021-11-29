@@ -14,6 +14,7 @@ import { DispatchAction } from './Reducer';
 import { AppState } from './State';
 import { Instrument } from './Instruments';
 import { Visualizer } from './Visualizers';
+import { stat } from 'fs';
 
 
 /** ------------------------------------------------------------------------ **
@@ -122,6 +123,44 @@ function Songs({ state, dispatch }: SideNavProps): JSX.Element {
   );
 }
 
+
+
+function Search({ state, dispatch }: SideNavProps): JSX.Element {
+  const results: List<any> = state.get('songs', List());
+  return (
+    <Section title="Search Songs">
+      {/* {results.map(song => ( */}
+        <div>
+          <input 
+            type="text"
+            id="search" 
+            placeholder="ode to joy" 
+            value={state.get('search')}
+            // onChange={(e) => state.set('search', ) }
+            onChange={(e) => {
+                state.set('search', e.target.value);
+                console.log('input: ' + e.target.value);
+                console.log(state);
+                console.log('state: ' + state.get('search'))
+              }
+            }
+            onSubmit={() => 
+              dispatch(new DispatchAction('SEARCH_SONGS', { song_title: state.get('search') } )) 
+            }
+          />
+        </div>
+
+        
+      {/* ))} */}
+    
+      {/* results */}
+      <div>
+        {/* {results.get('id')} */}
+      </div>
+    </Section>
+  );
+}
+
 export function SideNav({ state, dispatch }: SideNavProps): JSX.Element {
   return (
     <div className="absolute top-0 left-0 bottom-0 w5 z-1 shadow-1 bg-white flex flex-column">
@@ -132,6 +171,7 @@ export function SideNav({ state, dispatch }: SideNavProps): JSX.Element {
         <Instruments state={state} dispatch={dispatch} />
         <Visualizers state={state} dispatch={dispatch} />
         <Songs state={state} dispatch={dispatch} />
+        <Search state={state} dispatch={dispatch} />
       </div>
     </div>
   );

@@ -29,7 +29,8 @@ type DispatchActionType =
   | 'SET_SONGS'
   | 'PLAY_SONG'
   | 'STOP_SONG'
-  | 'SET_LOCATION';
+  | 'SET_LOCATION'
+  | 'SEARCH_SONGS';
 
 export class DispatchAction {
   readonly type: DispatchActionType;
@@ -94,6 +95,16 @@ export function appReducer(state: AppState, action: DispatchAction): AppState {
         return state
           .set('instrument', instrument)
           .set('visualizer', visualizer);
+      }
+      case 'SEARCH_SONGS': {
+        const results = state
+          .get('songs')
+          .filter((s:any) => s.get('song_title') === args.get('song_title'))
+          .get('id');
+
+        // TESTING
+        console.log('results: ' + results);
+        return state.set('results', results);
       }
       default:
         console.error(`type unknown: ${type}\n`, args.toJS());
