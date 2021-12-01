@@ -61,6 +61,7 @@ export const InstrumentContainer: React.FC<InstrumentContainerProps> = ({
   const notes = state.get('notes');
 
   useEffect(() => {
+
     if (notes && synth) {
       let eachNote = notes.split(' ');
       let noteObjs = eachNote.map((note: string, idx: number) => ({
@@ -87,6 +88,26 @@ export const InstrumentContainer: React.FC<InstrumentContainerProps> = ({
 
     return () => {};
   }, [notes, synth, dispatch]);
+
+  useEffect(() => {
+    if (instrument.name == "kevingithub0727") {
+      setSynth(oldSynth => {
+        oldSynth.disconnect();
+  
+        return new Tone.MembraneSynth({
+          oscillator: { type: 'sine' } as Tone.OmniOscillatorOptions,
+        }).toDestination();
+      });
+    } else {
+      setSynth(oldSynth => {
+        oldSynth.disconnect();
+  
+        return new Tone.Synth({
+          oscillator: { type: 'sine' } as Tone.OmniOscillatorOptions,
+        }).toDestination();
+      });
+    }
+  }, [state.get('instrument')])
 
   return (
     <div>
