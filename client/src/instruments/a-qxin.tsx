@@ -1,34 +1,64 @@
 // 3rd party library imports
 import * as Tone from 'tone';
+import { useState } from 'react'; // for sample
 import classNames from 'classnames';
 import { List, Range } from 'immutable';
 import React from 'react';
+import shrimp from '../img/shrimp.png';
 
 // project imports
 import { Instrument, InstrumentProps } from '../Instruments';
+// import { InstrumentSample, InstrumentPropsSample } from '../InstrumentsSampler';
 
 /** ------------------------------------------------------------------------ **
- * Contains implementation of components for Piano.
+ * Contains implementation of components for Flute.
  ** ------------------------------------------------------------------------ */
 
-interface PianoKeyProps {
+interface FluteKeyProps {
   note: string; // C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
   duration?: string;
   synth?: Tone.Synth; // Contains library code for making sound
   minor?: boolean; // True if minor key, false if major key
   octave: number;
-  index: number; // octave + index together give a location for the piano key
+  index: number; // octave + index together give a location for the flute key
 }
 
-export function PianoKey({
+export function FluteKey({
   note,
   synth,
   minor,
   index,
-}: PianoKeyProps): JSX.Element {
+}: FluteKeyProps): JSX.Element {
+
+  // const [sample] = useState(
+  //   new Tone.Sampler({
+  //     urls: {
+  //       A1: "flute_c3.mp3",
+  //     },
+  //     baseUrl: "http://localhost:3000",
+  //   }).toDestination()
+  // );
+
+  // const sample_sound = (note: string) => {
+  //   sample.triggerAttackRelease([`${note}`], 1);
+  // };
+
+  const [sample] = useState(
+    new Tone.Sampler({
+      urls:{
+        A3: "flute_c3.mp3"
+      },
+      baseUrl:"http://localhost:3000/",
+    }).toDestination()
+    );
+    
+  const sample_sound =(note:string)=>{
+    sample.triggerAttackRelease([`${note}`],1);
+  };
+
   /**
-   * This React component corresponds to either a major or minor key in the piano.
-   * See `PianoKeyWithoutJSX` for the React component without JSX.
+   * This React component corresponds to either a major or minor key in the flute.
+   * See `FluteKeyWithoutJSX` for the React component without JSX.
    */
   return (
     // Observations:
@@ -36,7 +66,9 @@ export function PianoKey({
     // 2. The JSX will be **transpiled** into the corresponding `React.createElement` library call.
     // 3. The curly braces `{` and `}` should remind you of string interpolation.
     <div
-      onMouseDown={() => synth?.triggerAttack(`${note}`)} // Question: what is `onMouseDown`?
+      // onMouseDown={() => synth?.triggerAttack(`${note}`)} // Question: what is `onMouseDown`?
+      // onMouseDown={() => sample_sound(`${note}`)}
+      onMouseDown={()=>sample_sound(`${note}`)}
       onMouseUp={() => synth?.triggerRelease('+0.25')} // Question: what is `onMouseUp`?
       className={classNames('ba pointer absolute dim', {
         'bg-black black h3': minor, // minor keys are black
@@ -55,15 +87,15 @@ export function PianoKey({
 }
 
 // eslint-disable-next-line
-function PianoKeyWithoutJSX({
+function FluteKeyWithoutJSX({
   note,
   synth,
   minor,
   index,
-}: PianoKeyProps): JSX.Element {
+}: FluteKeyProps): JSX.Element {
   /**
    * This React component for pedagogical purposes.
-   * See `PianoKey` for the React component with JSX (JavaScript XML).
+   * See `FluteKey` for the React component with JSX (JavaScript XML).
    */
   return React.createElement(
     'div',
@@ -86,7 +118,7 @@ function PianoKeyWithoutJSX({
   );
 }
 
-function PianoType({ title, onClick, active }: any): JSX.Element {
+function FluteType({ title, onClick, active }: any): JSX.Element {
   return (
     <div
       onClick={onClick}
@@ -100,7 +132,7 @@ function PianoType({ title, onClick, active }: any): JSX.Element {
   );
 }
 
-function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
+function Flute({ synth, setSynth }: InstrumentProps): JSX.Element {
   const keys = List([
     { note: 'C', idx: 0 },
     { note: 'Db', idx: 0.5 },
@@ -115,6 +147,20 @@ function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
     { note: 'Bb', idx: 5.5 },
     { note: 'B', idx: 6 },
   ]);
+
+  // const setFluteSample = () => {
+  //   const toot = new Tone.Sampler({
+  //     urls:{
+  //       A1: "flute_c3.mp3",
+  //     },
+  //     baseUrl: "http://localhost:3000/",
+  //     onload: () => {
+  //       toot.triggerAttackRelease(["A1"], 1);
+  //     }
+  //   }).toDestination();
+  //   console.log('hi i am playing a toot');
+  //   return toot;
+  // };
 
   const setOscillator = (newType: Tone.ToneOscillatorType) => {
     setSynth(oldSynth => {
@@ -139,17 +185,19 @@ function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
     'amtriangle',
   ]) as List<OscillatorType>;
 
-  return (
-    // instrument image
+  const shrimpImage = {
+    width: "90px",
+  };
 
+  return (
     <div className="pv4">
-      {/* <div className="relative dib h4 w-100 ml4">
+      <div className="relative dib h4 w-100 ml4">
         {Range(2, 7).map(octave =>
           keys.map(key => {
             const isMinor = key.note.indexOf('b') !== -1;
             const note = `${key.note}${octave}`;
             return (
-              <PianoKey
+              <FluteKey
                 key={note} //react key
                 note={note}
                 synth={synth}
@@ -160,17 +208,26 @@ function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
             );
           }),
         )}
-      </div> */}
+      </div>
 
-      <div>
-        empty div
-      </div> 
+      <div className={'pl4 flex'}>
+        {/* image div */}
+        <div className={'pl4 pt4 flex'}>
+          <img 
+            style={shrimpImage} 
+            src={shrimp}
+            // onClick={() => setFluteSample}
+            />
+        </div>
+        
+      </div>
       
       <div className={'pl4 pt4 flex'}>
         {oscillators.map(o => (
-          <PianoType
+          <FluteType
             key={o}
             title={o}
+            // onClick={() => setFluteSample}
             onClick={() => setOscillator(o)}
             active={synth?.oscillator.type === o}
           />
@@ -180,4 +237,4 @@ function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
   );
 }
 
-export const aqxinInstrument = new Instrument('aqxin', Piano);
+export const aqxinInstrument = new Instrument('aqxin', Flute);
