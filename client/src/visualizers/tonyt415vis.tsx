@@ -7,7 +7,7 @@ import { Visualizer } from '../Visualizers';
 
 
 export const WaveformVisualizer2 = new Visualizer(
-  'Bar',
+  'tonyt415',
   (p5: P5, analyzer: Tone.Analyser) => {
     //these values are for findin size of the availible window
     const width = window.innerWidth;

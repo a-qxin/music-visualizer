@@ -29,3 +29,6 @@ VALUES (1, 'Ode to Joy (Dubstep Remix)', 'E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4
 
 INSERT INTO songs (id, song_title, notes, artist, album,release_date) 
 VALUES (2, 'Ode to Joy', 'E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4 D4', 'Beethoven', 'Mixtape','pain');
+
+INSERT INTO songs (id, song_title, notes, artist, album,release_date) 
+VALUES (3, 'Ode to Joy', 'D4 D4 E4 D4 G4 F4 D4 D4 E4 D4 A4 G4', 'unknown', 'n/a','really old');
