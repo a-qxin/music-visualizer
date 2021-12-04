@@ -36,7 +36,7 @@ export function PianoKey({
     new Tone.Sampler({
       urls:{
         A1: "wowc.mp3",
-        A2: "wowd.mp3"
+        A4: "wowd.mp3",
       },
       baseUrl:"http://localhost:3000/",
     }).toDestination()
@@ -63,76 +63,33 @@ export function PianoKey({
         
         borderRadius: '50%',
         top: 1,
-        left: `${index * 2 }rem`,
+        left: `${index * 5 }rem`,
         zIndex: minor ? 1 : 0,
-        width: minor ? '2rem' : '2.5rem',
-        height: minor ? '2rem' : '2.5rem',
+        width: minor ? '2rem' : '4rem',
+        height: minor ? '2rem' : '4rem',
         marginLeft: minor ? '0.25rem' : 1,
-        
       }}
     >
-      <img src='http://localhost:3000/OWEN.png' alt='test' width="50" height="25" 
+      <img src='http://localhost:3000/OWEN.png' alt='test' width="100" height="100" 
       style={{
         // CSS
         
         borderRadius: '50%',
         top: 1,
-        left: `${index * 2}rem`,
+        left: `${index * 5}rem`,
         zIndex: minor ? 1 : 0,
-        width: minor ? '2rem' : '3rem',
-        height: minor ? '2rem' : '3rem',
+        width: minor ? '2rem' : '6rem',
+        height: minor ? '2rem' : '5rem',
         marginLeft: minor ? '0.25rem' : 0,
         
       }}></img>
+      
     </div>
   );
 }
 
-// eslint-disable-next-line
-function PianoKeyWithoutJSX({
-  note,
-  synth,
-  minor,
-  index,
-}: PianoKeyProps): JSX.Element {
-  /**
-   * This React component for pedagogical purposes.
-   * See `PianoKey` for the React component with JSX (JavaScript XML).
-   */
-  return React.createElement(
-    'div',
-    {
-      onMouseDown: () => synth?.triggerAttack(`${note}`),
-      onMouseUp: () => synth?.triggerRelease('+0.25'),
-      className: classNames('ba pointer absolute dim', {
-        'bg-black black h3': minor,
-        'black bg-white h4': !minor,
-      }),
-      style: {
-        top: 0,
-        left: `${index * 2}rem`,
-        zIndex: minor ? 1 : 0,
-        width: minor ? '1.5rem' : '2rem',
-        marginLeft: minor ? '0.25rem' : 0,
-      },
-    },
-    [],
-  );
-}
 
-function PianoType({ title, onClick, active }: any): JSX.Element {
-  return (
-    <div
-      onClick={onClick}
-      className={classNames('dim pointer ph2 pv1 ba mr2 br1 fw7 bw1', {
-        'b--black black': active,
-        'gray b--light-gray': !active,
-      })}
-    >
-      {title}
-    </div>
-  );
-}
+
 
 function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
   const keys = List([
@@ -167,57 +124,51 @@ function Piano({ synth, setSynth }: InstrumentProps): JSX.Element {
     
 // };
 
-const [deepOwen] = useState(
+// const [deepOwen] = useState(
+//   new Tone.Sampler({
+//     urls:{
+//       A1: "wowc.mp3",
+//       A2: "wowd.mp3"
+//     },
+//     baseUrl:"http://localhost:3000/",
+//   }).toDestination()
+// );
+
+//testing buttons to sound
+// const deepwow =()=>{
+//   deepOwen.triggerAttackRelease(["C1"],1);
+// };
+
+const [lightning] = useState(
   new Tone.Sampler({
     urls:{
-      A1: "wowc.mp3",
-      A2: "wowd.mp3"
+      A1: "speed.mp3",
+      A2: "kachow.mp3",
+      A3:"kachow2.mp3",
     },
     baseUrl:"http://localhost:3000/",
   }).toDestination()
 );
 
-
-const deepwow =()=>{
-  deepOwen.triggerAttackRelease(["C1"],1);
+const amSpeed =()=>{
+  lightning.volume.value = -15;
+  lightning.triggerAttackRelease([`a1`],5);
+};
+const kachow =()=>{
+  lightning.volume.value = 0;
+  lightning.triggerAttackRelease([`a2`],5);
+};
+const kachow2 =()=>{
+  lightning.volume.value = 0;
+  lightning.triggerAttackRelease([`a3`],5);
 };
 
 
 
-// return (
-//   <div>
-//     <h3>TestING</h3>
-//     <button onClick={deepwow}>TESTING</button>
-//   </div>
-// )
-
-  // const setOscillator = (newType: Tone.ToneOscillatorType) => {
-  //   setSynth(oldSynth => {
-  //     oldSynth.disconnect();
-
-  //     return new Tone.Synth({
-  //       oscillator: { type: newType } as Tone.OmniOscillatorOptions,
-  //     }).toDestination();
-  //   });
-  // };
-
-  // const oscillators: List<OscillatorType> = List([
-  //   'sine',
-  //   'sawtooth',
-  //   'square',
-  //   'triangle',
-  //   'fmsine',
-  //   'fmsawtooth',
-  //   'fmtriangle',
-  //   'amsine',
-  //   'amsawtooth',
-  //   'amtriangle',
-  // ]) as List<OscillatorType>;
-
   return (
     <div className="pv4">
       <div className="relative dib h4 w-100 ml4">
-        {Range(2, 7).map(octave =>
+        {Range(2, 4).map(octave =>
           keys.map(key => {
             const isMinor = key.note.indexOf('b') !== -1;
             const note = `${key.note}${octave}`;
@@ -235,23 +186,11 @@ const deepwow =()=>{
         )}
       </div>
       {/* Location for buttons near the bottom*/}
-      <img src='http://localhost:3000/Lightning.png' alt='cars1' width="100" height="50"></img>
-      <img src='http://localhost:3000/Lightning.png' alt='cars2' width="100" height="50" ></img>
-      <img src='http://localhost:3000/Lightning.png' alt='cars3' width="100" height="50" ></img>
-
-      {/* <div className={'pl4 pt4 flex'}>
-        {oscillators.map(o => (
-          <PianoType
-            key={o}
-            title={o}
-            onClick={deepwow}
-            active = {deepwow}
-            // active={synth?.oscillator.type === o}
-          />
-        ))}
-      </div> */}
+      <img src='http://localhost:3000/Lightning.png' alt='cars1' width="100" height="50" onMouseDown={amSpeed}></img>
+      <img src='http://localhost:3000/Lightning.png' alt='cars2' width="100" height="50" onClick={kachow}></img>
+      <img src='http://localhost:3000/Lightning.png' alt='cars3' width="100" height="50" onClick={kachow2}></img>
     </div>
   );
 }
 
-export const PianoInstrument2 = new Instrument('Tonyt415', Piano);
+export const PianoInstrument2 = new Instrument('TonyT415', Piano);
