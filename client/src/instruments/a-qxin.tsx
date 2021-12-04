@@ -8,7 +8,6 @@ import shrimp from '../img/shrimp.png';
 
 // project imports
 import { Instrument, InstrumentProps } from '../Instruments';
-// import { InstrumentSample, InstrumentPropsSample } from '../InstrumentsSampler';
 
 /** ------------------------------------------------------------------------ **
  * Contains implementation of components for Flute.
@@ -30,19 +29,6 @@ export function FluteKey({
   index,
 }: FluteKeyProps): JSX.Element {
 
-  // const [sample] = useState(
-  //   new Tone.Sampler({
-  //     urls: {
-  //       A1: "flute_c3.mp3",
-  //     },
-  //     baseUrl: "http://localhost:3000",
-  //   }).toDestination()
-  // );
-
-  // const sample_sound = (note: string) => {
-  //   sample.triggerAttackRelease([`${note}`], 1);
-  // };
-
   const [sample] = useState(
     new Tone.Sampler({
       urls:{
@@ -50,7 +36,7 @@ export function FluteKey({
       },
       baseUrl:"http://localhost:3000/",
     }).toDestination()
-    );
+  );
     
   const sample_sound =(note:string)=>{
     sample.triggerAttackRelease([`${note}`],1);
@@ -148,20 +134,6 @@ function Flute({ synth, setSynth }: InstrumentProps): JSX.Element {
     { note: 'B', idx: 6 },
   ]);
 
-  // const setFluteSample = () => {
-  //   const toot = new Tone.Sampler({
-  //     urls:{
-  //       A1: "flute_c3.mp3",
-  //     },
-  //     baseUrl: "http://localhost:3000/",
-  //     onload: () => {
-  //       toot.triggerAttackRelease(["A1"], 1);
-  //     }
-  //   }).toDestination();
-  //   console.log('hi i am playing a toot');
-  //   return toot;
-  // };
-
   const setOscillator = (newType: Tone.ToneOscillatorType) => {
     setSynth(oldSynth => {
       oldSynth.disconnect();
@@ -216,7 +188,6 @@ function Flute({ synth, setSynth }: InstrumentProps): JSX.Element {
           <img 
             style={shrimpImage} 
             src={shrimp}
-            // onClick={() => setFluteSample}
             />
         </div>
         
