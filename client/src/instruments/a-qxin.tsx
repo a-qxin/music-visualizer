@@ -64,7 +64,9 @@ export function FluteKey({
         width: '5rem',
         marginLeft: '.25rem',
       }}
-    ><img src={shrimp} style={shrimpImage}></img></div>
+    >
+      <img src={shrimp} style={shrimpImage} />
+    </div>
   );
 }
 

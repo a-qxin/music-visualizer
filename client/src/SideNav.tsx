@@ -134,10 +134,11 @@ function Search({ state, dispatch }: SideNavProps): JSX.Element {
 
       {/* {results.map(song => ( */}
         <div>
-          <input 
+          <input
             type="text"
             id="search" 
             placeholder="ode to joy"
+            style={{ width: '100%' }}
             onChange = {event => setSearch(event.target.value)}
             // onChange={(e) => state.set('search', ) }
 
@@ -156,6 +157,7 @@ function Search({ state, dispatch }: SideNavProps): JSX.Element {
             // }
           />
           <button
+            style={{ margin: '10px 0' }}
             onClick={() => {
               //testing
               console.log("Dispatch sent");
