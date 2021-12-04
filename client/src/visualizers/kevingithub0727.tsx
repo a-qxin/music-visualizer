@@ -16,7 +16,7 @@ export const kevingithub0727Visualizer = new Visualizer(
     }
     
     p5.draw = () => {
-      p5.background(100);
+      p5.background(0, 0, 0, 255);
 
       p5.translate(240, 0, 0);
       p5.push();
