@@ -1,6 +1,6 @@
 // 3rd party library imports
 import * as Tone from 'tone';
-import { useState } from 'react'; // for sample
+import { useState } from 'react'; // for Tone.Sample
 import classNames from 'classnames';
 import { List, Range } from 'immutable';
 import React from 'react';
@@ -32,19 +32,21 @@ export function FluteKey({
   const [sample] = useState(
     new Tone.Sampler({
       urls:{
-        A3: "flute_c3.mp3"
+        A3: "flute_a3.mp3",
       },
-      baseUrl:"http://localhost:3000/",
     }).toDestination()
   );
     
-  const sample_sound =(note:string)=>{
-    sample.triggerAttackRelease([`${note}`],1);
+  const flute_sample = (note: string) => {
+    sample.triggerAttackRelease([`${note}`], 1);
+  };
+
+  const shrimpImage = {
+    width: "90px",
   };
 
   /**
    * This React component corresponds to either a major or minor key in the flute.
-   * See `FluteKeyWithoutJSX` for the React component without JSX.
    */
   return (
     // Observations:
@@ -52,69 +54,17 @@ export function FluteKey({
     // 2. The JSX will be **transpiled** into the corresponding `React.createElement` library call.
     // 3. The curly braces `{` and `}` should remind you of string interpolation.
     <div
-      // onMouseDown={() => synth?.triggerAttack(`${note}`)} // Question: what is `onMouseDown`?
-      // onMouseDown={() => sample_sound(`${note}`)}
-      onMouseDown={()=>sample_sound(`${note}`)}
-      onMouseUp={() => synth?.triggerRelease('+0.25')} // Question: what is `onMouseUp`?
-      className={classNames('ba pointer absolute dim', {
-        'bg-black black h3': minor, // minor keys are black
-        'black bg-white h4': !minor, // major keys are white
+      onMouseDown={()=> flute_sample(`${note}`)}
+      onMouseUp={() => synth?.triggerRelease('+0.25')}
+      className={classNames('pointer absolute dim', {
       })}
       style={{
-        // CSS
-        top: 0,
-        left: `${index * 2}rem`,
-        zIndex: minor ? 1 : 0,
-        width: minor ? '1.5rem' : '2rem',
-        marginLeft: minor ? '0.25rem' : 0,
+        top: minor ? 0 : '100px',
+        left: `${index * 6}rem`,
+        width: '5rem',
+        marginLeft: '.25rem',
       }}
-    ></div>
-  );
-}
-
-// eslint-disable-next-line
-function FluteKeyWithoutJSX({
-  note,
-  synth,
-  minor,
-  index,
-}: FluteKeyProps): JSX.Element {
-  /**
-   * This React component for pedagogical purposes.
-   * See `FluteKey` for the React component with JSX (JavaScript XML).
-   */
-  return React.createElement(
-    'div',
-    {
-      onMouseDown: () => synth?.triggerAttack(`${note}`),
-      onMouseUp: () => synth?.triggerRelease('+0.25'),
-      className: classNames('ba pointer absolute dim', {
-        'bg-black black h3': minor,
-        'black bg-white h4': !minor,
-      }),
-      style: {
-        top: 0,
-        left: `${index * 2}rem`,
-        zIndex: minor ? 1 : 0,
-        width: minor ? '1.5rem' : '2rem',
-        marginLeft: minor ? '0.25rem' : 0,
-      },
-    },
-    [],
-  );
-}
-
-function FluteType({ title, onClick, active }: any): JSX.Element {
-  return (
-    <div
-      onClick={onClick}
-      className={classNames('dim pointer ph2 pv1 ba mr2 br1 fw7 bw1', {
-        'b--black black': active,
-        'gray b--light-gray': !active,
-      })}
-    >
-      {title}
-    </div>
+    ><img src={shrimp} style={shrimpImage}></img></div>
   );
 }
 
@@ -134,75 +84,25 @@ function Flute({ synth, setSynth }: InstrumentProps): JSX.Element {
     { note: 'B', idx: 6 },
   ]);
 
-  const setOscillator = (newType: Tone.ToneOscillatorType) => {
-    setSynth(oldSynth => {
-      oldSynth.disconnect();
-
-      return new Tone.Synth({
-        oscillator: { type: newType } as Tone.OmniOscillatorOptions,
-      }).toDestination();
-    });
-  };
-
-  const oscillators: List<OscillatorType> = List([
-    'sine',
-    'sawtooth',
-    'square',
-    'triangle',
-    'fmsine',
-    'fmsawtooth',
-    'fmtriangle',
-    'amsine',
-    'amsawtooth',
-    'amtriangle',
-  ]) as List<OscillatorType>;
-
-  const shrimpImage = {
-    width: "90px",
-  };
-
   return (
     <div className="pv4">
       <div className="relative dib h4 w-100 ml4">
-        {Range(2, 7).map(octave =>
+        {Range(3, 5).map(octave =>
           keys.map(key => {
             const isMinor = key.note.indexOf('b') !== -1;
             const note = `${key.note}${octave}`;
             return (
               <FluteKey
-                key={note} //react key
+                key={note}
                 note={note}
                 synth={synth}
                 minor={isMinor}
                 octave={octave}
-                index={(octave - 2) * 7 + key.idx}
+                index={(octave - 3) * 7 + key.idx}
               />
             );
           }),
         )}
-      </div>
-
-      <div className={'pl4 flex'}>
-        {/* image div */}
-        <div className={'pl4 pt4 flex'}>
-          <img 
-            style={shrimpImage} 
-            src={shrimp}
-            />
-        </div>
-        
-      </div>
-      
-      <div className={'pl4 pt4 flex'}>
-        {oscillators.map(o => (
-          <FluteType
-            key={o}
-            title={o}
-            // onClick={() => setFluteSample}
-            onClick={() => setOscillator(o)}
-            active={synth?.oscillator.type === o}
-          />
-        ))}
       </div>
     </div>
   );
