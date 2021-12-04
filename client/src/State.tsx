@@ -8,6 +8,8 @@ import { WaveformVisualizer } from './visualizers/Waveform';
 import { benthebenguinVisualizer } from './visualizers/benthebenguinVisualizer';
 import {PianoInstrument2} from './instruments/tonyt415';
 import { WaveformVisualizer2 } from './visualizers/tonyt415';
+import { aqxinInstrument } from './instruments/a-qxin';
+import { aqxinVisualizer } from './visualizers/a-qxin';
 
 /** ------------------------------------------------------------------------ **
  * The entire application state is stored in AppState.
@@ -21,8 +23,8 @@ import { WaveformVisualizer2 } from './visualizers/tonyt415';
  */
 export type AppState = Map<string, any>;
 
-const instruments = List([PianoInstrument, benthebenguinInstrument, PianoInstrument2]);
-const visualizers = List([WaveformVisualizer, benthebenguinVisualizer, WaveformVisualizer2]);
+const instruments = List([PianoInstrument, benthebenguinInstrument, PianoInstrument2, aqxinInstrument]);
+const visualizers = List([WaveformVisualizer, benthebenguinVisualizer, WaveformVisualizer2, aqxinVisualizer]);
 
 export const defaultState: AppState = Map<string, any>({
   instruments,

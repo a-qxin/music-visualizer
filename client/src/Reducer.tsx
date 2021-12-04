@@ -49,7 +49,7 @@ export class DispatchAction {
 export function appReducer(state: AppState, action: DispatchAction): AppState {
   const { type, args } = action;
 
-  console.debug(`${type}`);
+  // console.debug(`${type}`);
 
   // Question: Does this function remind of you registering callbacks?
   const newState = (() => {
@@ -97,10 +97,29 @@ export function appReducer(state: AppState, action: DispatchAction): AppState {
           .set('visualizer', visualizer);
       }
       case 'SEARCH_SONGS': {
+        
         const results = state
           .get('songs')
-          .filter((s:any) => s.get('song_title') === args.get('song_title'))
-          .get('id');
+          .filter((s:any) => s.get('songTitle') === args.get('songTitle'));
+
+        console.log('Songs: ' + state.get('songs'));
+
+        // TESTING
+        //works
+        // console.log('reducer search input: ' + args.get('songTitle'));
+        // //Works
+        // console.log('reducer results: ' + results);
+        // //nope
+        // console.log('song titles: ' + state.get('songs').get('songTitle'));
+        // //works
+        // console.log('reducer songs: ' + state.get('songs').filter((s:any) => s.get('songTitle') === args.get('songTitle')));
+        // //nope
+        // console.log('first song: ' + state.get('songs').filter((s:any) => s.get('id') === 1).get('songTitle'));
+
+        // //test
+        // state.set('results', results);
+        // console.log('reducer state results: ' + state.get('results'));
+        // console.log(state);
 
         return state.set('results', results);
       }
@@ -110,7 +129,7 @@ export function appReducer(state: AppState, action: DispatchAction): AppState {
     }
   })();
 
-  console.debug(newState.update('socket', s => (s ? '[socket]' : s)).toJS());
+  // console.debug(newState.update('socket', s => (s ? '[socket]' : s)).toJS());
 
   return newState;
 }

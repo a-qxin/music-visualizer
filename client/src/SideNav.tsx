@@ -14,6 +14,8 @@ import { DispatchAction } from './Reducer';
 import { AppState } from './State';
 import { Instrument } from './Instruments';
 import { Visualizer } from './Visualizers';
+import { stat } from 'fs';
+import { useState } from 'react';
 
 
 /** ------------------------------------------------------------------------ **
@@ -122,6 +124,77 @@ function Songs({ state, dispatch }: SideNavProps): JSX.Element {
   );
 }
 
+
+
+function Search({ state, dispatch }: SideNavProps): JSX.Element {
+  var results: List<any> = state.get('songs');
+  const [search, setSearch] = useState('');
+  return (
+    <Section title="Search Songs">
+
+      {/* {results.map(song => ( */}
+        <div>
+          <input
+            type="text"
+            id="search" 
+            placeholder="ode to joy"
+            style={{ width: '100%' }}
+            onChange = {event => setSearch(event.target.value)}
+            // onChange={(e) => state.set('search', ) }
+
+            // onChange={(e) => {
+            //     input = e.target.value;
+            //     console.log('input: ' + e.target.value);
+            //     console.log(state);
+            //     // console.log('state: ' + state.get('search'))
+            //     console.log("results: " + state.get('results'));
+            //   }
+            // }
+
+            // return filtered results into results array
+            // onSubmit={() => 
+            //     dispatch(new DispatchAction('SEARCH_SONGS', { songTitle: state.get('search') } ))
+            // }
+          />
+          <button
+            style={{ margin: '10px 0' }}
+            onClick={() => {
+              //testing
+              console.log("Dispatch sent");
+              // console.log(input);
+              dispatch(new DispatchAction('SEARCH_SONGS', { songTitle: search } ))
+              console.log("Returned results: " + state.get('results'));
+              results = state.get('results', List());
+            }
+            }
+          >
+            Submit
+          </button>
+          {/* // results = state.get('results', List()); */}
+            {(results) ? (<Section title="Results">
+              {results.map(song => (
+                <div
+                  key={song.get('id')}
+                  className="f6 pointer underline flex items-center no-underline i dim"
+                  onClick={() =>
+                    dispatch(new DispatchAction('PLAY_SONG', { id: song.get('id') }))
+                  }
+                >
+                  <Music20 className="mr1" />
+                  {song.get('songTitle')}
+                </div>
+              ))}
+              
+            </Section>) : (<Section title="Results">No results found.</Section>)}
+        </div>
+
+        
+      {/* ))} */}
+    
+    </Section>
+  );
+}
+
 export function SideNav({ state, dispatch }: SideNavProps): JSX.Element {
   return (
     <div className="absolute top-0 left-0 bottom-0 w5 z-1 shadow-1 bg-white flex flex-column">
@@ -132,6 +205,7 @@ export function SideNav({ state, dispatch }: SideNavProps): JSX.Element {
         <Instruments state={state} dispatch={dispatch} />
         <Visualizers state={state} dispatch={dispatch} />
         <Songs state={state} dispatch={dispatch} />
+        <Search state={state} dispatch={dispatch} />
       </div>
     </div>
   );

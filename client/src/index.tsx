@@ -15,7 +15,7 @@ import './tachyons.css';
  ** ------------------------------------------------------------------------ */
 
 function onReactLoaded() {
-  console.log('React has loaded.');
+  // console.log('React has loaded.');
 }
 
 const rootEl = document.getElementById('root');
