@@ -9,8 +9,26 @@ PRAGMA foreign_keys;
 CREATE TABLE songs (
 	id int NOT NULL PRIMARY KEY,
 	song_title text NOT NULL,
-	notes varchar NOT NULL
+	notes varchar NOT NULL,
+	artist text NOT NULL,
+	album text NOT NULL,
+	release_date text NOT NULL 
 );
 
-INSERT INTO songs (id, song_title, notes) 
-VALUES (1, 'Ode to Joy (Dubstep Remix)', 'E4 E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4 D4');
+DROP TABLE IF EXISTS songs;
+
+CREATE TABLE playlists (
+	id int NOT NULL PRIMARY KEY,
+	playlists_title text NOT NULL,
+	song_count int NOT NULL,
+	playlist_creator text NOT NULL
+);
+
+INSERT INTO songs (id, song_title, notes, artist, album, release_date) 
+VALUES (1, 'Ode to Joy (Dubstep Remix)', 'E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4 D4', 'Beethoven', 'Mixtape', 'yes');
+
+INSERT INTO songs (id, song_title, notes, artist, album,release_date) 
+VALUES (2, 'Ode to Joy', 'E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4 D4', 'Beethoven', 'Mixtape','pain');
+
+INSERT INTO songs (id, song_title, notes, artist, album,release_date) 
+VALUES (3, 'Ode to Joy', 'D4 D4 E4 D4 G4 F4 D4 D4 E4 D4 A4 G4', 'unknown', 'n/a','really old');
