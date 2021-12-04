@@ -127,7 +127,7 @@ function Songs({ state, dispatch }: SideNavProps): JSX.Element {
 
 
 function Search({ state, dispatch }: SideNavProps): JSX.Element {
-  var results: List<any> = state.get('songs');
+  var results: List<any> = state.get('results', List());
   const [search, setSearch] = useState('');
   return (
     <Section title="Search Songs">
@@ -160,13 +160,14 @@ function Search({ state, dispatch }: SideNavProps): JSX.Element {
             style={{ margin: '10px 0' }}
             onClick={() => {
               //testing
-              console.log("Dispatch sent");
-              // console.log(input);
+              
               dispatch(new DispatchAction('SEARCH_SONGS', { songTitle: search } ))
               console.log("Returned results: " + state.get('results'));
-              results = state.get('results', List());
-            }
-            }
+              results.clear()
+              console.log(results);
+              results.push(state.get('results', List()));
+              console.log(results);
+            }}
           >
             Submit
           </button>
@@ -199,7 +200,7 @@ export function SideNav({ state, dispatch }: SideNavProps): JSX.Element {
   return (
     <div className="absolute top-0 left-0 bottom-0 w5 z-1 shadow-1 bg-white flex flex-column">
       <div className="h3 fw7 f5 flex items-center pl3 bb b--light-gray">
-        Nameless App
+      <p>Apple &#128512;&#128073;&#127822;©®™</p>
       </div>
       <div className="flex-auto">
         <Instruments state={state} dispatch={dispatch} />

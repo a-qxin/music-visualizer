@@ -6,7 +6,7 @@ import * as Tone from 'tone';
 import { Visualizer } from '../Visualizers';
 
 
-export const WaveformVisualizer2 = new Visualizer(
+export const TonyT415Visualizer = new Visualizer(
   'TonyT415',
   (p5: P5, analyzer: Tone.Analyser) => {
     //these values are for findin size of the availible window
@@ -40,7 +40,7 @@ export const WaveformVisualizer2 = new Visualizer(
         const y = 0 + 4 * (amplitude * height);
         //const y = height / 2 + amplitude * height;
         // Place vertex
-        p5.ellipse(x,height/2,1,y/2);
+        p5.ellipse(x-700,height/2-150,1,y/2);
       }
   },
 );

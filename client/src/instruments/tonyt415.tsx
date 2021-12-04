@@ -32,18 +32,18 @@ export function PianoKey({
    * This React component corresponds to either a major or minor key in the piano.
    * See `PianoKeyWithoutJSX` for the React component without JSX.
    */
-   const [sample] = useState(
+   const [wow] = useState(
     new Tone.Sampler({
       urls:{
         A1: "wowc.mp3",
-        A4: "wowd.mp3",
+        // A4: "wowd.mp3",
       },
       baseUrl:"http://localhost:3000/",
     }).toDestination()
     );
 
-  const sample_sound =(note:string)=>{
-    sample.triggerAttackRelease([`${note}`],1);
+  const wowBoard =(note:string)=>{
+    wow.triggerAttackRelease([`${note}`],1);
   };
   return (
     // Observations:
@@ -52,7 +52,7 @@ export function PianoKey({
     // 3. The curly braces `{` and `}` should remind you of string interpolation.
     <div
       // onMouseDown={() => synth?.triggerAttack(`${note}`)} // Question: what is `onMouseDown`?
-      onMouseDown={()=>sample_sound(`${note}`)}
+      onMouseDown={()=>wowBoard(`${note}`)}
       onMouseUp={() => synth?.triggerRelease('+0.25')} // Question: what is `onMouseUp`?
       className={classNames('ba pointer absolute dim', {
         'bg-yellow black h3': minor, // minor keys are black
@@ -144,7 +144,7 @@ const [lightning] = useState(
     urls:{
       A1: "speed.mp3",
       A2: "kachow.mp3",
-      A3:"kachow2.mp3",
+      A3: "kachow2.mp3",
     },
     baseUrl:"http://localhost:3000/",
   }).toDestination()
@@ -193,4 +193,4 @@ const kachow2 =()=>{
   );
 }
 
-export const PianoInstrument2 = new Instrument('TonyT415', Piano);
+export const TonyT415Instrument = new Instrument('TonyT415', Piano);

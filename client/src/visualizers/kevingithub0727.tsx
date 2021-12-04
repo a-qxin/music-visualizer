@@ -10,15 +10,19 @@ import { Visualizer } from '../Visualizers';
 export const kevingithub0727Visualizer = new Visualizer(
   'kevingithub0727',
   (p5: p5, analyzer: Tone.Analyser) => {
+
+    const height: number = window.innerHeight;
+    const width: number = window.innerWidth;
+
     p5.setup = () => {
-      p5.createCanvas(720, 400, p5.WEBGL);
+      p5.createCanvas(width, height);
       
     }
     
     p5.draw = () => {
       p5.background(0, 0, 0, 255);
 
-      p5.translate(240, 0, 0);
+      p5.translate(-240, 0, 0);
       p5.push();
       const values = analyzer.getValue();
       

@@ -31,7 +31,7 @@ export function DuckSinger({
    * This React component corresponds to either a major or minor key in the piano.
    * See `PianoKeyWithoutJSX` for the React component without JSX.
    */
-  const [sample] = useState(
+  const [quack] = useState(
     new Tone.Sampler({
       urls:{
         // sounds used to tune
@@ -42,7 +42,7 @@ export function DuckSinger({
   );
 
   const duck_sound =(note:string)=>{
-    sample.triggerAttackRelease([`${note}`], 1);
+    quack.triggerAttackRelease([`${note}`], 1);
   };
 
   return (

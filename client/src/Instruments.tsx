@@ -10,6 +10,8 @@ import { AppState } from './State';
  * Contains implementation of an Instruments.
  ** ------------------------------------------------------------------------ */
 
+  
+
 export interface InstrumentProps {
   state: AppState;
   dispatch: React.Dispatch<DispatchAction>;
@@ -57,40 +59,137 @@ export const InstrumentContainer: React.FC<InstrumentContainerProps> = ({
       oscillator: { type: 'sine' } as Tone.OmniOscillatorOptions,
     }).toDestination(),
   );
+  
+  // ben instrument
+  const [quack] = useState(
+    new Tone.Sampler({
+      urls:{
+        // sounds used to tune
+        C3: "quack.mp3",
+      },
+      baseUrl:"http://localhost:3000/",
+    }).toDestination()
+  );
+
+
+  // Tony instrument
+  const [wow] = useState(
+    new Tone.Sampler({
+      urls:{
+        E4: "wowc.mp3",
+        A4: "wowd.mp3",
+      },
+      baseUrl:"http://localhost:3000/",
+    }).toDestination()
+  );
+
+  const [aqxin] = useState(
+    new Tone.Sampler({
+      urls:{
+        A3: "flute_a3.mp3",
+      },
+    }).toDestination()
+  );
+
+  const [kevin] = useState(
+    new Tone.MembraneSynth({
+      oscillator: { type: 'sine' } as Tone.OmniOscillatorOptions,
+    }).toDestination()
+  );
 
   const notes = state.get('notes');
 
+  // useEffect(() => {
+
+  //   if (notes && synth) {
+  //     let eachNote = notes.split(' ');
+  //     let noteObjs = eachNote.map((note: string, idx: number) => ({
+  //       idx,
+  //       time: `+${idx / 4}`,
+  //       note,
+  //       velocity: 1,
+  //     }));
+
+  //     new Tone.Part((time, value) => {
+  //       // the value is an object which contains both the note and the velocity
+  //       synth.triggerAttackRelease(value.note, '4n', time, value.velocity);
+  //       if (value.idx === eachNote.length - 1) {
+  //         dispatch(new DispatchAction('STOP_SONG'));
+  //       }
+  //     }, noteObjs).start(0);
+
+  //     Tone.Transport.start();
+
+  //     return () => {
+  //       Tone.Transport.cancel();
+  //     };
+  //   }
+    
+  //   return () => {};
+  // }, [notes, synth, dispatch]);
+
+  let con:Tone.Sampler |Tone.MembraneSynth|Tone.Synth |undefined;
+
   useEffect(() => {
-
-    if (notes && synth) {
-      let eachNote = notes.split(' ');
-      let noteObjs = eachNote.map((note: string, idx: number) => ({
-        idx,
-        time: `+${idx / 4}`,
-        note,
-        velocity: 1,
-      }));
-
-      new Tone.Part((time, value) => {
-        // the value is an object which contains both the note and the velocity
-        synth.triggerAttackRelease(value.note, '4n', time, value.velocity);
-        if (value.idx === eachNote.length - 1) {
-          dispatch(new DispatchAction('STOP_SONG'));
+      switch(instrument.name){
+        case "TonyT415":{
+          synth.disconnect();
+          con = wow;
+          break;
         }
-      }, noteObjs).start(0);
+        case "benthebenguin":{
+          synth.disconnect();
+          con = quack;
+          break;
+        }
+        case "aqxin":{
+          synth.disconnect();
+          con = aqxin;
+          break;
+        }
+        case "kevingithub0727":{
+          synth.disconnect();
+          con = kevin;
+          break;
+        }
+        default:
+          con = synth;
+          break;
+      }
 
-      Tone.Transport.start();
+      
+      if (notes && con) {
+        let eachNote = notes.split(' ');
+        let noteObjs = eachNote.map((note: string, idx: number) => ({
+          idx,
+          time: `+${idx / 4}`,
+          note,
+          velocity: 1,
+        }));
 
-      return () => {
-        Tone.Transport.cancel();
-      };
-    }
+        new Tone.Part((time, value) => {
+          // the value is an object which contains both the note and the velocity
+          if(con) {
+            con.triggerAttackRelease(value.note, '4n', time, value.velocity);
+            if (value.idx === eachNote.length - 1) {
+              dispatch(new DispatchAction('STOP_SONG'));
+            }
+          }
+        }, noteObjs).start(0);
 
+        Tone.Transport.start();
+
+        return () => {
+          Tone.Transport.cancel();
+        };
+      }
+      
+    
     return () => {};
-  }, [notes, synth, dispatch]);
+  }, [notes, con, dispatch]);
 
   useEffect(() => {
-    if (instrument.name == "kevingithub0727") {
+    if (instrument.name === "kevingithub0727") {
       setSynth(oldSynth => {
         oldSynth.disconnect();
   
@@ -98,7 +197,8 @@ export const InstrumentContainer: React.FC<InstrumentContainerProps> = ({
           oscillator: { type: 'sine' } as Tone.OmniOscillatorOptions,
         }).toDestination();
       });
-    } else {
+    } 
+    else{
       setSynth(oldSynth => {
         oldSynth.disconnect();
   
@@ -108,6 +208,7 @@ export const InstrumentContainer: React.FC<InstrumentContainerProps> = ({
       });
     }
   }, [state.get('instrument')])
+
 
   return (
     <div>

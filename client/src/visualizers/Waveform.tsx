@@ -26,7 +26,7 @@ export const WaveformVisualizer = new Visualizer(
       const x = p5.map(i, 0, values.length - 1, 0, width);
       const y = height / 2 + amplitude * height;
       // Place vertex
-      p5.vertex(x, y);
+      p5.vertex(x - 700, y - 150);
     }
     p5.endShape();
   },

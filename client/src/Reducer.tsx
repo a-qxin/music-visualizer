@@ -97,11 +97,31 @@ export function appReducer(state: AppState, action: DispatchAction): AppState {
           .set('visualizer', visualizer);
       }
       case 'SEARCH_SONGS': {
+
+        let searchFilter = (input: any): boolean => {
+          var searchString = args.get('songTitle').toLowerCase();
+          var title = input.get('songTitle').toLowerCase();
+          var album = input.get('album').toLowerCase();
+          var artist = input.get('artist').toLowerCase();
+          if(title.includes(searchString)) {
+            return true;
+          }
+          else if(album.includes(searchString)) {
+            return true;
+          }
+          else if(artist.includes(searchString)) {
+            return true;
+          }
+
+          // search failed
+          return false;
+        }
         
         const results = state
           .get('songs')
-          .filter((s:any) => s.get('songTitle') === args.get('songTitle'));
-
+          .filter((s:any) => searchFilter(s));
+          // .filter((s:any) => s.get('songTitle') === args.get('songTitle'));
+          
         console.log('Songs: ' + state.get('songs'));
 
         // TESTING
