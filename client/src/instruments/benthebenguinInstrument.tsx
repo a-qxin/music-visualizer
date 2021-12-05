@@ -28,14 +28,10 @@ export function DuckSinger({
   minor,
   index,
 }: DuckChoirProps): JSX.Element {
-  /**
-   * This React component corresponds to either a major or minor key in the piano.
-   * See `PianoKeyWithoutJSX` for the React component without JSX.
-   */
   const [quack] = useState(
     new Tone.Sampler({
       urls:{
-        // sounds used to tune
+        // duck audio
         C3: "quack.mp3",
       },
       baseUrl:"http://localhost:3000/",
@@ -46,96 +42,25 @@ export function DuckSinger({
     quack.triggerAttackRelease([`${note}`], 1);
   };
 
-  function duckQuack() {
-    duck_sound(`${note}`);
-    
-    document.getElementById("")
-  }
-
   return (
-    // Observations:
-    // 1. The JSX refers to the HTML-looking syntax within TypeScript.
-    // 2. The JSX will be **transpiled** into the corresponding `React.createElement` library call.
-    // 3. The curly braces `{` and `}` should remind you of string interpolation.
       <img 
         src={duck}
         id="duckSinger"
         onMouseDown={() => duck_sound(`${note}`)}
-        onMouseUp={() => synth?.triggerRelease('+0.25')} // Question: what is `onMouseUp`?
+        onMouseUp={() => synth?.triggerRelease('+0.25')}
         alt="duck"
         style={{
           // CSS
           top: 0,
           left: `${index * 2}rem`,
-          height: '5rem',
-          width: '5rem',
+          // size of duck changes from left to right
+          height: `${index * 0.5}rem`,
+          width: `${index * 0.5}rem`,
           marginLeft: 0,
         }}
       ></img>
-
-    
   );
 }
-
-// eslint-disable-next-line
-function DuckSingerWithoutJSX({
-  note,
-  synth,
-  minor,
-  index,
-}: DuckChoirProps): JSX.Element {
-  /**
-   * This React component for pedagogical purposes.
-   * See `PianoKey` for the React component with JSX (JavaScript XML).
-   */
-   const [sample] = useState(
-    new Tone.Sampler({
-      urls:{
-        // sounds used to tune
-        C3: "quack.mp3",
-      },
-      baseUrl:"http://localhost:3000/",
-    }).toDestination()
-  );
-
-  const duck_sound =(note:string)=>{
-    sample.triggerAttackRelease([`${note}`], 1);
-  };
-
-  return React.createElement(
-    'div',
-    {
-      onMouseDown: () => duck_sound(`${note}`),
-      onMouseUp: () => synth?.triggerRelease('+0.25'),
-      className: classNames('ba pointer absolute dim', {
-        'bg-black black h3': minor,
-        'black bg-white h4': !minor,
-      }),
-      style: {
-        top: 0,
-        left: `${index * 2}rem`,
-        height: '2rem',
-        width: '2rem',
-        marginLeft: minor ? '0.25rem' : 0,
-      },
-    },
-    [],
-  );
-}
-
-function DuckType({ title, onClick, active }: any): JSX.Element {
-  return (
-    <div
-      onClick={onClick}
-      className={classNames('dim pointer ph2 pv1 ba mr2 br1 fw7 bw1', {
-        'b--black black': active,
-        'gray b--light-gray': !active,
-      })}
-    >
-      {title}
-    </div>
-  )
-};
 
 function DuckChoir({ synth, setSynth }: InstrumentProps): JSX.Element {
   const ducks = List([
@@ -153,33 +78,11 @@ function DuckChoir({ synth, setSynth }: InstrumentProps): JSX.Element {
     { note: 'B', idx: 6 },
   ]);
 
-  const setOscillator = (newType: Tone.ToneOscillatorType) => {
-    setSynth(oldSynth => {
-      oldSynth.disconnect();
-
-      return new Tone.Synth({
-        oscillator: {type: newType} as Tone.OmniOscillatorOptions,
-      }).toDestination();
-    });
-  };
-
-  const oscillators: List<OscillatorType> = List([
-    'sine',
-    'sawtooth',
-    'square',
-    'triangle',
-    'fmsine',
-    'fmsawtooth',
-    'fmtriangle',
-    'amsine',
-    'amsawtooth',
-    'amtriangle',
-  ]) as List<OscillatorType>;
 
   return (
     <div className="pv4">
       <div className="relative dib h4 w-100 ml4">
-        {Range(2, 5).map(octave =>
+        {Range(3, 4).map(octave =>
           ducks.map(key => {
             const isMinor = key.note.indexOf('b') !== -1;
             const note = `${key.note}${octave}`;
@@ -195,17 +98,6 @@ function DuckChoir({ synth, setSynth }: InstrumentProps): JSX.Element {
             );
           }),
         )}
-      </div>
-
-      <div className={'pl4 pt4 flex'}>
-        {oscillators.map(o => (
-          <DuckType
-            key={o}
-            title={o}
-            onClick={() => setOscillator(o)}
-            active={synth?.oscillator.type === o}
-          />
-        ))}
       </div>
     </div>
   );
