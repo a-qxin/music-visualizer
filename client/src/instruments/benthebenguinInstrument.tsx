@@ -7,6 +7,7 @@ import duck from '../img/duck.gif';
 
 // project imports
 import { Instrument, InstrumentProps } from '../Instruments';
+import { off } from 'process';
 
 /** ------------------------------------------------------------------------ **
  * Contains implementation of components for DuckChoir.
@@ -45,29 +46,34 @@ export function DuckSinger({
     quack.triggerAttackRelease([`${note}`], 1);
   };
 
+  function duckQuack() {
+    duck_sound(`${note}`);
+    
+    document.getElementById("")
+  }
+
   return (
     // Observations:
     // 1. The JSX refers to the HTML-looking syntax within TypeScript.
     // 2. The JSX will be **transpiled** into the corresponding `React.createElement` library call.
     // 3. The curly braces `{` and `}` should remind you of string interpolation.
-    <img 
-      src={duck}
-      onMouseDown={() => duck_sound(`${note}`)} // Question: what is `onMouseDown`?
-      onMouseUp={() => synth?.triggerRelease('+0.25')} // Question: what is `onMouseUp`?
-      // className={classNames('ba pointer absolute dim', {
-      //   'bg-black black h3': minor, // minor keys are black
-      //   'black bg-white h4': !minor, // major keys are white
-      // })}
-      alt="duck"
-      style={{
-        // CSS
-        top: 0,
-        left: `${index * 2}rem`,
-        height: '5rem',
-        width: '5rem',
-        marginLeft: minor ? '0.25rem' : 0,
-      }}
-    ></img>
+      <img 
+        src={duck}
+        id="duckSinger"
+        onMouseDown={() => duck_sound(`${note}`)}
+        onMouseUp={() => synth?.triggerRelease('+0.25')} // Question: what is `onMouseUp`?
+        alt="duck"
+        style={{
+          // CSS
+          top: 0,
+          left: `${index * 2}rem`,
+          height: '5rem',
+          width: '5rem',
+          marginLeft: 0,
+        }}
+      ></img>
+
+    
   );
 }
 
@@ -173,7 +179,7 @@ function DuckChoir({ synth, setSynth }: InstrumentProps): JSX.Element {
   return (
     <div className="pv4">
       <div className="relative dib h4 w-100 ml4">
-        {Range(2, 7).map(octave =>
+        {Range(2, 5).map(octave =>
           ducks.map(key => {
             const isMinor = key.note.indexOf('b') !== -1;
             const note = `${key.note}${octave}`;
