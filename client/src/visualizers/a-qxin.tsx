@@ -10,6 +10,7 @@ import { Visualizer } from '../Visualizers';
 
 // 2nd dimension for visualizer
 let yoff = 0.0;
+let zoff = 0.0;
 
 // color via mouse position
 let mix = 0; 
@@ -20,7 +21,7 @@ export const aqxinVisualizer = new Visualizer(
   (p5: P5, analyzer: Tone.Analyser) => {
     const height = window.innerHeight / 2;
 
-    // p5.background(51);
+    p5.background(51);
 
     // color via mouse position
 
@@ -46,13 +47,17 @@ export const aqxinVisualizer = new Visualizer(
       }
       let y = p5.map(p5.noise(xoff, yoff), 0, 1, 100, 400) + height * amp2/10;
       yoff += amp2/10;
-      p5.vertex(x, y);
+      zoff += amp2/2;
+      p5.vertex(x, y, 100);
       xoff += .02;
       // xoff += .02 * p5.mouseY/300 * p5.mouseX/300 // mouse x offset for fun
     }
     yoff += .01;
-    p5.vertex(p5.width, p5.height);
-    p5.vertex(0, p5.height);
+    // p5.vertex(p5.width, p5.height);
+    // p5.vertex(0, p5.height);
+    p5.translate(-1040, -240, 100);
+    // p5.vertex(window.innerWidth, window.innerHeight / 2);
+    // p5.vertex(0, window.innerHeight / 2, window.innerHeight);
 
     p5.endShape(p5.CLOSE);
   },
